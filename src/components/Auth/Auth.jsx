@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Axios from "axios";
-import {withRouter} from 'react-router-dom'
-import {connect} from 'react-redux'
-import {updateUser} from '../../ducks/reducer'
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { updateUser } from "../../ducks/reducer";
 
 class Auth extends Component {
   constructor() {
@@ -25,27 +25,32 @@ class Auth extends Component {
       password: this.state.password
     });
     alert(res.data.message);
-    updateUser(res.data.userData)
+    updateUser(res.data.userData);
     this.setState({
-      username: '',
-      password: ''
+      username: "",
+      password: ""
     });
-    if(res.status == 201) {this.props.history.push('/dashboard')}
+    if (res.status === 201) {
+      this.props.history.push("/dashboard");
+    }
   }
 
   async login() {
-      let res = await Axios.post('/auth/login', {
-          username: this.state.username,
-          password: this.state.password
-      });
-      alert(res.data.message)
-      console.log(updateUser(res.data.userData))
-      updateUser(res.data.userData)
-      this.setState({
-          username: '',
-          password: ''
-      })
-      if(res.status == 200) {this.props.history.push('/dashboard')}
+    let res = await Axios.post("/auth/login", {
+      username: this.state.username,
+      password: this.state.password
+    });
+    alert(res.data.message);
+    const { id, username, profilePic } = res.data.userData;
+    console.log(username, id, profilePic);
+    updateUser(username, id, profilePic);
+    this.setState({
+      username: "",
+      password: ""
+    });
+    if (res.status === 200) {
+      this.props.history.push("/dashboard");
+    }
   }
 
   render() {
@@ -54,13 +59,17 @@ class Auth extends Component {
         Auth.jsx Helo
         <div>
           Username:
-          <input onChange={e => this.handleChange(e, "username")}
-          value= {this.state.username}></input>
+          <input
+            onChange={e => this.handleChange(e, "username")}
+            value={this.state.username}
+          ></input>
         </div>
         <div>
           Password:
-          <input onChange={e => this.handleChange(e, "password")}
-          value={this.state.password}></input>
+          <input
+            onChange={e => this.handleChange(e, "password")}
+            value={this.state.password}
+          ></input>
         </div>
         <button onClick={() => this.login()}>Login</button>
         <button onClick={() => this.register()}>Register</button>
