@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import {withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
+import {updateUser} from '../../ducks/reducer'
 
 class Auth extends Component {
   constructor() {
@@ -23,8 +25,8 @@ class Auth extends Component {
       password: this.state.password
     });
     alert(res.data.message);
+    updateUser(res.data.userData)
     this.setState({
-      user: res.data.userData,
       username: '',
       password: ''
     });
@@ -37,8 +39,9 @@ class Auth extends Component {
           password: this.state.password
       });
       alert(res.data.message)
+      console.log(updateUser(res.data.userData))
+      updateUser(res.data.userData)
       this.setState({
-          user: res.data.userData,
           username: '',
           password: ''
       })
@@ -59,7 +62,6 @@ class Auth extends Component {
           <input onChange={e => this.handleChange(e, "password")}
           value={this.state.password}></input>
         </div>
-        {/* //! incomplete buttons. need to place proper funcitons on them */}
         <button onClick={() => this.login()}>Login</button>
         <button onClick={() => this.register()}>Register</button>
       </div>
@@ -67,4 +69,4 @@ class Auth extends Component {
   }
 }
 
-export default withRouter(Auth);
+export default connect(null, updateUser)(withRouter(Auth));
