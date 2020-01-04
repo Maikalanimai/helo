@@ -25,7 +25,7 @@ class Auth extends Component {
       password: this.state.password
     });
     alert(res.data.message);
-    updateUser(res.data.userData);
+    this.props.updateUser(res.data.userData.id, res.data.userData.username, res.data.userData.profilePic);
     this.setState({
       username: "",
       password: ""
@@ -43,7 +43,7 @@ class Auth extends Component {
     alert(res.data.message);
     const { id, username, profilePic } = res.data.userData;
     console.log(username, id, profilePic);
-    updateUser(username, id, profilePic);
+    this.props.updateUser(username, id, profilePic);
     this.setState({
       username: "",
       password: ""
@@ -78,4 +78,4 @@ class Auth extends Component {
   }
 }
 
-export default connect(null, updateUser)(withRouter(Auth));
+export default connect(null, {updateUser})(withRouter(Auth));
