@@ -19,7 +19,6 @@ class Nav extends Component {
           <Link to="/">
             <li>Logout</li>
           </Link>
-          {console.log(this.props)}
         </ul>
       </div>
     );

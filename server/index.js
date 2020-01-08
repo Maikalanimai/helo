@@ -22,6 +22,8 @@ app.use(
 //auth endpoints
 app.post('/auth/register', ctrl.register)
 app.post(`/auth/login`, ctrl.login)
+//get posts
+app.get(`/api/posts/`, ctrl.getAllPosts)
 
 massive(CONNECTION_STRING).then(db => {
     app.set('db', db)

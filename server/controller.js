@@ -48,5 +48,11 @@ module.exports = {
         .send({ message: "Logged in!", userData: req.session.user });
     }
     res.status(401).send({ message: "Password Incorrect" });
+  },
+  getAllPosts: (req, res) => {
+    const db = req.app.get("db");
+    db.get_all_posts().then(result => {
+      res.status(200).send(result);
+    });
   }
 };
