@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Axios from "axios";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 class Dashboard extends Component {
   constructor() {
@@ -7,18 +9,25 @@ class Dashboard extends Component {
     this.state = {
       searchInput: "",
       userPosts: true,
-      posts: []
+      posts: [],
+      filtPosts: []
     };
   }
 
   async componentDidMount() {
-    await Axios.get("/api/posts").then(res => {
-      console.log(res.data);
-      this.setState({
-        posts: res.data
-      });
-    });
-    console.log(this.state.posts);
+    this.props.username !== ""
+      ? await Axios.get("/api/posts").then(res => {
+          this.setState({
+            posts: res.data
+          });
+          let filteredPosts = this.state.posts.filter(
+            post => post.username !== this.props.username
+          );
+          this.setState({
+            filtPosts: filteredPosts
+          });
+        })
+      : this.props.history.push("/");
   }
 
   handleChange(e, key) {
@@ -67,18 +76,33 @@ class Dashboard extends Component {
           value={this.state.userPosts}
           onClick={() => this.toggleCheck()}
         />
-        {this.state.posts.map((e, i) => {
-          return (
-            <div>
-              <h3 className="postTitle">{e.title}</h3>
-              <h4 className="username">{e.username}</h4>
-              <img src={e.profile_picture} alt={e.username} />
-            </div>
-          );
-        })}
+        {this.state.userPosts
+          ? this.state.posts.map((e, i) => {
+              return (
+                <div key={i}>
+                  <h3 className="postTitle">{e.title}</h3>
+                  <h4 className="username">{e.username}</h4>
+                  <img src={e.profile_picture} alt={e.username} />
+                </div>
+              );
+            })
+          : this.state.filtPosts.map((e, i) => {
+              return (
+                <div key={i}>
+                  <h3 className="postTitle">{e.title}</h3>
+                  <h4 className="username">{e.username}</h4>
+                  <img src={e.profile_picture} alt={e.username} />
+                </div>
+              );
+            })}
       </div>
     );
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => {
+  const { username } = state;
+  return { username };
+};
+
+export default connect(mapStateToProps)(withRouter(Dashboard));

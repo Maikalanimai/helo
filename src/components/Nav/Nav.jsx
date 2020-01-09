@@ -1,8 +1,14 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { updateUser} from '../../ducks/reducer'
 
 class Nav extends Component {
+  
+  logout = () => this.props.updateUser('', '', '' )
+
+
+
   render() {
     return (
       <div>
@@ -17,7 +23,7 @@ class Nav extends Component {
             <li>New Post</li>
           </Link>
           <Link to="/">
-            <li>Logout</li>
+            <li onClick={this.logout}>Logout</li>
           </Link>
         </ul>
       </div>
@@ -30,4 +36,4 @@ const mapStateToProps = state => {
   return { username, profilePic };
 };
 
-export default connect(mapStateToProps, null)(Nav);
+export default connect(mapStateToProps, {updateUser})(Nav);

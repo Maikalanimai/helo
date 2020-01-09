@@ -25,12 +25,13 @@ class Auth extends Component {
       password: this.state.password
     });
     alert(res.data.message);
-    this.props.updateUser(res.data.userData.id, res.data.userData.username, res.data.userData.profilePic);
+    
     this.setState({
       username: "",
       password: ""
     });
     if (res.status === 201) {
+      this.props.updateUser( res.data.userData.username, res.data.userData.id,res.data.userData.profilePic);
       this.props.history.push("/dashboard");
     }
   }
@@ -42,7 +43,6 @@ class Auth extends Component {
     });
     alert(res.data.message);
     const { id, username, profilePic } = res.data.userData;
-    console.log(username, id, profilePic);
     this.props.updateUser(username, id, profilePic);
     this.setState({
       username: "",

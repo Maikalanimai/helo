@@ -21,7 +21,7 @@ module.exports = {
     req.session.user = {
       id: createdUser[0].id,
       username,
-      profilePic: user[0].profile_picture
+      profilePic: createdUser[0].profile_picture
     };
     res
       .status(201)
@@ -32,7 +32,7 @@ module.exports = {
     const { username, password } = req.body;
     const inUse = await db.user_in_use(username);
     if (+inUse[0].count === 0) {
-      return res.status(401).send({ messsage: "Username not found" });
+      return res.status(404).send({ messsage: "Username not found" });
     }
     const user = await db.find_user(username);
     const result = bcrypt.compareSync(password, user[0].hash);
@@ -42,7 +42,6 @@ module.exports = {
         username,
         profilePic: user[0].profile_picture
       };
-      console.log(req.session.user);
       return res
         .status(200)
         .send({ message: "Logged in!", userData: req.session.user });
