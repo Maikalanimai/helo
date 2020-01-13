@@ -52,6 +52,7 @@ class Auth extends Component {
     if (res.status === 200) {
       this.props.history.push("/dashboard");
     }
+
   }
 
   render() {

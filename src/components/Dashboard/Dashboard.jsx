@@ -33,7 +33,7 @@ class Dashboard extends Component {
     console.log(
       Axios.post("/auth/checklogin").then(res => {
         console.log(res.data);
-        if ((res.status = 200)) {
+        if ((res.status === 200)) {
           const { id, username, profilePic } = res.data.userData;
           this.props.updateUser(username, id, profilePic);
           this.props.history.push("/dashboard");

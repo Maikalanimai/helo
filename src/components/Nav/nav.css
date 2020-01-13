@@ -3,13 +3,16 @@
   width: 7vw;
   display: flex;
   position: fixed;
-  background: #ff70a6;
+  background: #ff8e43;
+  margin-left: 0px;
 }
 ul{
   list-style: none;
+  margin: 0px;
+  width: 4vw;
 }
 .nav-img{
-  height: 7vh;
-  width: 7vh;
+  height: auto;
+  width: 90%;
   padding-bottom: 1vh;
 }
