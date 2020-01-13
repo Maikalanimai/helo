@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Axios from "axios";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { updateUser } from "../../ducks/reducer";
 
@@ -42,6 +42,7 @@ class Auth extends Component {
       password: this.state.password
     });
     alert(res.data.message);
+    console.log(res.data)
     const { id, username, profilePic } = res.data.userData;
     this.props.updateUser(username, id, profilePic);
     this.setState({
@@ -54,9 +55,11 @@ class Auth extends Component {
   }
 
   render() {
+    if (this.props.username) return <Redirect to='/dashboard'/>
+
     return (
       <div>
-        Auth.jsx Helo
+        <h1>Helo</h1>
         <div>
           Username:
           <input
@@ -78,4 +81,9 @@ class Auth extends Component {
   }
 }
 
-export default connect(null, {updateUser})(withRouter(Auth));
+const mapStateToProps = state => {
+  const {username} = state
+  return {username}
+}
+
+export default connect(mapStateToProps, {updateUser})(withRouter(Auth));

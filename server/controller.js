@@ -48,10 +48,48 @@ module.exports = {
     }
     res.status(401).send({ message: "Password Incorrect" });
   },
+  checklogin: (req,res)=> {
+    req.session.user ? 
+      res.status(200).send({message: "logged in", userData: req.session.user})
+      : res.status(401).send({message: 'please log in'})
+    
+  },
   getAllPosts: (req, res) => {
     const db = req.app.get("db");
     db.get_all_posts().then(result => {
       res.status(200).send(result);
     });
+  },
+  getFilteredPosts: (req,res) => {
+    const db = req.app.get('db')
+    const {search} = req.query
+    db.get_search_posts(`%${search}`, `${search}%`).then(result => {
+      res.status(200).send(result)
+    })
+  },
+  getPost: (req,res) => {
+    const db = req.app.get('db')
+    const {id} = req.params
+    db.get_post(id).then(result => {
+      res.status(200).send(result)
+    })
+  },
+  postPost: (req,res) => {
+    const db =req.app.get('db')
+    const {user_id, title, content, image_url} = req.body
+    db.create_post(user_id, title, content, image_url). then(result => {
+      res.status(201).send(result)
+    })
+  }, 
+  deletePost: (req,res) =>  {
+    const db = req.app.get('db')
+    const {id} = req.params
+    db.delete_post(id).then(result=> {
+      res.status(200).send(result)
+    })
+  },
+  logout: async (req, res) => {
+    req.session.destroy()
+    res.status(200). send({message: 'logged out'})
   }
 };

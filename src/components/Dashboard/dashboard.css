@@ -1,0 +1,24 @@
+.search-bar{
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dash-button{
+  height: 1.5rem;
+  width: auto;
+}
+main{
+  border: solid grey 2px;
+  margin: 0px 7vw 7vh 14vw;
+}
+.post{
+  display: grid;
+  margin: auto;
+  width: 90%;
+  grid-template-columns: 3fr 1fr 1fr;
+  align-items: center;
+  border: black 1px solid;
+  margin: 1fr;
+}

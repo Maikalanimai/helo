@@ -14,7 +14,7 @@ app.use(
         {
             secret:SESSION_SECRET,
             resave: false,
-            saveUninitialized: false,
+            saveUninitialized: true,
             cookie: {
                 maxAge: 60 * 60 * 1000 //1 hour
             }
@@ -25,8 +25,17 @@ app.use(
 //auth endpoints
 app.post('/auth/register', ctrl.register)
 app.post(`/auth/login`, ctrl.login)
+app.post(`/auth/checklogin`, ctrl.checklogin)
+app.post(`/auth/logout`, ctrl.logout)
 //get posts
 app.get(`/api/posts/`, ctrl.getAllPosts)
+app.get('/api/filtposts/', ctrl.getFilteredPosts)
+//get single post
+app.get(`/api/post/:id`, ctrl.getPost)
+//upload post
+app.post(`/api/post`, ctrl.postPost)
+//delete post
+app.delete(`/api/post/:id`, ctrl.deletePost)
 
 massive(CONNECTION_STRING).then(db => {
     app.set('db', db)
